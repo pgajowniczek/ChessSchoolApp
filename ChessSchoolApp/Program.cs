@@ -16,7 +16,7 @@ static void AddStudents(IRepository<Student> studentRepository)
 }
 
 
-static void WriteAllToConsole(IRepository<IEntity> repository)
+static void WriteAllToConsole(IReadRepository<IEntity> repository)
 {
     var items = repository.GetAll();
     foreach (var item in items)
