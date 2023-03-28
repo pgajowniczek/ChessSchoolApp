@@ -1,6 +1,6 @@
 ﻿namespace ChessSchoolApp.Entities
 {
-    public class Trainer : EntityBase
+    public class Trainer : EntityBase, INameable
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

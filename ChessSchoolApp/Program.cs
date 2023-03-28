@@ -1,10 +1,36 @@
 ﻿using ChessSchoolApp.Data;
 using ChessSchoolApp.Entities;
 using ChessSchoolApp.Repositories;
+using System.IO.Enumeration;
 
-
+const string LogFileName = "logs.txt";
+AppOppened();
 var studentRepository = new FileRepository<Student>();
 var trainerRepository = new FileRepository<Trainer>();
+
+
+studentRepository.ItemAdded += UserRepositoryOnItemAdded;
+trainerRepository.ItemAdded += UserRepositoryOnItemAdded;
+studentRepository.ItemRemoved += UserRepositoryOnItemRemoved;
+trainerRepository.ItemRemoved += UserRepositoryOnItemRemoved;
+
+void UserRepositoryOnItemAdded<T>(object? sender, T e) where T : class, INameable
+{
+    var text = $"   {DateTime.Now} {typeof(T).Name} added => Name: {e.FirstName} Surname: {e.LastName} from {sender?.GetType().Name}";
+    using (var writer = File.AppendText(LogFileName))
+    {
+        writer.WriteLine(text);
+    }
+}
+
+void UserRepositoryOnItemRemoved<T>(object? sender, T e) where T : class, INameable
+{
+    var text = $"       {DateTime.Now} {typeof(T).Name} REMOVED => Name: {e.FirstName} Surname: {e.LastName} from {sender?.GetType().Name}";
+    using (var writer = File.AppendText(LogFileName))
+    {
+        writer.WriteLine(text);
+    }
+}
 
 bool isWorking = true;
 while (isWorking)
@@ -48,6 +74,7 @@ while (isWorking)
                     case "X":
                         stayInCurrentView = false;
                         isWorking = false;
+                        AppClosed();
                         break;
                     default:
                         Console.WriteLine("Invalid value. Please try again when this text will disapear");
@@ -132,6 +159,7 @@ while (isWorking)
         case "x":
         case "X":
             isWorking = false;
+            AppClosed();
             break;
         default:
             break;
@@ -154,6 +182,26 @@ static void ClearConsole()
     Console.WriteLine(logo);
     Console.ResetColor();
 }
+
+static void AppOppened()
+{
+    using (var writer = File.AppendText(LogFileName))
+    {
+        writer.WriteLine($"{DateTime.Now} - Application oppened ===================================================");
+    }
+}
+static void AppClosed()
+{
+    using (var writer = File.AppendText(LogFileName))
+    {
+        writer.WriteLine($"{DateTime.Now} - Application closed  ===================================================");
+    }
+}
+
+
+
+
+
 #region OLD
 //AddStudents(studentRepository);
 

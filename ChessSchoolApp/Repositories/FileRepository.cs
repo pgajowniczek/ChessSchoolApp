@@ -2,10 +2,14 @@
 using ChessSchoolApp.Repositories;
 using Newtonsoft.Json;
 
+
 public class FileRepository<T> : IRepository<T> where T : class, IEntity
 {
     private readonly string _fileName;
     private readonly List<T> _items;
+
+    public event EventHandler<T>? ItemAdded;
+    public event EventHandler<T>? ItemRemoved;
 
     public FileRepository()
     {
@@ -24,6 +28,7 @@ public class FileRepository<T> : IRepository<T> where T : class, IEntity
     public void Add(T item)
     {
         _items.Add(item);
+        ItemAdded?.Invoke(this, item);
         Save();
     }
 
@@ -40,6 +45,7 @@ public class FileRepository<T> : IRepository<T> where T : class, IEntity
     public void Remove(T item)
     {
         _items.Remove(item);
+        ItemRemoved?.Invoke(this, item);
         Save();
     }
 

@@ -1,6 +1,6 @@
 ﻿namespace ChessSchoolApp.Entities
 {
-    public class Student : EntityBase
+    public class Student : EntityBase, INameable
     {
         private static int _idCounter = 0;
         public string FirstName { get; set; }
