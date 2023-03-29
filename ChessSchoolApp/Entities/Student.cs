@@ -6,9 +6,12 @@
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
+        public Ranking StudentRanking { get; set; }
+
         public Student() 
         {
             Id = ++_idCounter;
+            StudentRanking = new Ranking { StudentId = this.Id, MatchesPlayed = 0, Wins = 0, Draws = 0, Points = 1100};
         }
 
 

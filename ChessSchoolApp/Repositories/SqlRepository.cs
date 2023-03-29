@@ -14,6 +14,9 @@ namespace ChessSchoolApp.Repositories
             _dbSet= _dbContext.Set<T>();
         }
 
+        public event EventHandler<T>? ItemAdded;
+        public event EventHandler<T>? ItemRemoved;
+
         public void Add(T item)
         {
             _dbSet.Add(item);
