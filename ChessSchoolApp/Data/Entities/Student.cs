@@ -1,4 +1,4 @@
-﻿namespace ChessSchoolApp.Entities
+﻿namespace ChessSchoolApp.Data.Entities
 {
     public class Student : EntityBase, INameable
     {
@@ -8,14 +8,14 @@
 
         public Ranking StudentRanking { get; set; }
 
-        public Student() 
+        public Student()
         {
             Id = ++_idCounter;
-            StudentRanking = new Ranking { StudentId = this.Id, MatchesPlayed = 0, Wins = 0, Draws = 0, Points = 1100};
+            StudentRanking = new Ranking { StudentId = Id, MatchesPlayed = 0, Wins = 0, Draws = 0, Points = 1100 };
         }
 
 
-public override string ToString() => $"Id: {Id}, Name: {FirstName}, Surname: {LastName}";
+        public override string ToString() => $"Id: {Id}, Name: {FirstName}, Surname: {LastName}";
 
 
     }

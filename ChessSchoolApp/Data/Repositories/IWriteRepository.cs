@@ -1,4 +1,4 @@
-﻿using ChessSchoolApp.Entities;
+﻿using ChessSchoolApp.Data.Entities;
 
 namespace ChessSchoolApp.Repositories
 {

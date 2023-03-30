@@ -1,4 +1,4 @@
-﻿using ChessSchoolApp.Entities;
+﻿using ChessSchoolApp.Data.Entities;
 using System.Text;
 
 public class Ranking : EntityBase

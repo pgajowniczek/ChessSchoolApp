@@ -1,4 +1,4 @@
-﻿using ChessSchoolApp.Entities;
+﻿using ChessSchoolApp.Data.Entities;
 using ChessSchoolApp.Repositories;
 using Newtonsoft.Json;
 

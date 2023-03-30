@@ -1,20 +1,24 @@
-﻿using ChessSchoolApp.Entities;
+﻿using ChessSchoolApp.Data.Entities;
 using ChessSchoolApp.Repositories;
+using System.Xml.Linq;
 
 public class App : IApp
 {
     private readonly IRepository<Student> _studentRepository;
     private readonly IRepository<Trainer> _trainerRepository;
     private readonly IRankingProvider _rankingProvider;
+    private readonly ICsvReader _csvReader;
 
     public App(
-        IRepository<Student> studentRepository, 
+        IRepository<Student> studentRepository,
         IRepository<Trainer> trainerRepository,
-        IRankingProvider rankingProvider)
+        IRankingProvider rankingProvider,
+        ICsvReader csvReader)
     {
         _studentRepository = studentRepository;
         _trainerRepository = trainerRepository;
         _rankingProvider = rankingProvider;
+        _csvReader = csvReader;
     }
 
     const string LogFileName = "logs.txt";
@@ -30,6 +34,8 @@ public class App : IApp
         _trainerRepository.ItemAdded += UserRepositoryOnItemAdded;
         _studentRepository.ItemRemoved += UserRepositoryOnItemRemoved;
         _trainerRepository.ItemRemoved += UserRepositoryOnItemRemoved;
+
+        CreateXml();
         bool isWorking = true;
         while (isWorking)
         {
@@ -212,5 +218,47 @@ public class App : IApp
         {
             writer.WriteLine(text);
         }
+    }
+
+    private void CreateXml()
+    {
+        var students = _csvReader.ProcessStudents("Resources\\Files\\Students.csv");
+        var rankings = _csvReader.ProcessRankings("Resources\\Files\\Stats.csv");
+
+        var groups = students.Join(
+            rankings,
+            x => x.Id,
+            x => x.StudentId,
+            (student, ranking) =>
+            new
+            {
+                student.FirstName,
+                student.LastName,
+                ranking.MatchesPlayed,
+                ranking.Wins,
+                ranking.Losses,
+                ranking.Draws,
+                ranking.Points
+            }
+            );
+
+        var document = new XDocument();
+        var studentsRanks = new XElement("Students", groups
+            .Select(x =>
+            new XElement("Student",
+                new XAttribute("Name", x.FirstName),
+                new XAttribute("LastName", x.LastName),
+                new XElement("Ranking",
+                    new XAttribute("MatchesPlayed", x.MatchesPlayed),
+                    new XAttribute("Wins", x.Wins),
+                    new XAttribute("Losses", x.Losses),
+                    new XAttribute("Draws", x.Draws),
+                    new XAttribute("Points", x.Points)
+                    ))
+        ));
+
+        document.Add(studentsRanks);
+        document.Save("studentRanks.xml");
+
     }
 }

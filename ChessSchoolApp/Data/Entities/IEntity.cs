@@ -1,4 +1,4 @@
-﻿namespace ChessSchoolApp.Entities
+﻿namespace ChessSchoolApp.Data.Entities
 {
     public interface IEntity
     {

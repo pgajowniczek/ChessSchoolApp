@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ChessSchoolApp.Entities;
+using ChessSchoolApp.Data.Entities;
 
 namespace ChessSchoolApp.Data
 {

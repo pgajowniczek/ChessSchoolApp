@@ -1,6 +1,6 @@
 ﻿using ChessSchoolApp.Repositories;
-using ChessSchoolApp.Entities;
 using Microsoft.Extensions.DependencyInjection;
+using ChessSchoolApp.Data.Entities;
 
 var services = new ServiceCollection();
 services.AddSingleton<IApp, App>();
@@ -8,6 +8,7 @@ services.AddSingleton<IRepository<Student>, FileRepository<Student>>();
 services.AddSingleton<IRepository<Trainer>, FileRepository<Trainer>>();
 services.AddSingleton<IRepository<Ranking>, FileRepository<Ranking>>();
 services.AddSingleton<IRankingProvider, RankingProvider>();
+services.AddSingleton<ICsvReader, CsvReader>();
 
 var serviceProvider = services.BuildServiceProvider();
 var app = serviceProvider.GetService<IApp>()!;
